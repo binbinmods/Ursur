@@ -1,0 +1,15 @@
+{
+    "Card0": "ursurpolarpouncestart",
+    "Card1": "intercept",
+    "Card2": "maul",
+    "Card3": "shieldbash",
+    "Card4": "spikedball",
+    "Card5": "",
+    "CardSpecial0": "",
+    "CardSpecial1": "",
+    "PackClass": "Warrior",
+    "PackID": "ursur",
+    "PackName": "Ursur",
+    "PerkList": [],
+    "RequiredClass": "tyrant"
+}

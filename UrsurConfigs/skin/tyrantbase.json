@@ -1,0 +1,15 @@
+{
+    "BaseSkin": true,
+    "PerkLevel": 0,
+    "SkinGO": "skinursur",
+    "SkinID": "tyrantbase",
+    "SkinName": "Ursur",
+    "SkinOrder": 0,
+    "SkinSubclass": "tyrant",
+    "Sku": "",
+    "SpritePortrait": "UrsurPortrait",
+    "SpritePortraitGrande": "UrsurPortraitGrande",
+    "SpriteSilueta": "UrsurSilueta",
+    "SpriteSiluetaGrande": "UrsurSiluetaGrande",
+    "SteamStat": ""
+}
