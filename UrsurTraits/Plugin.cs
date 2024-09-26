@@ -14,7 +14,7 @@ namespace TheTyrant
     {
         internal const int ModDate = 20240925;
         private readonly Harmony harmony = new(PluginInfo.PLUGIN_GUID);
-        internal static ManualLogSource Log;
+        public static ManualLogSource Log;
         private void Awake()
         {
             Log = Logger;
@@ -26,12 +26,13 @@ namespace TheTyrant
                 _description: "Ursur, The Tyrant.",
                 _version: PluginInfo.PLUGIN_VERSION,
                 _date: ModDate,
-                _link: @"https://github.com/binbinmods/ursurtyrant",
+                _link: @"https://github.com/binbinmods/Ursur",
                 _contentFolder: "Ursur",
                 _type: ["content", "hero", "trait"]
             );
             // Add text for trait test
             medsTexts["trait_Ursine Blood"] = "Testing String";
+            Log.LogDebug("Ursur Prepatch - 1");
 
             // apply patches
             harmony.PatchAll();

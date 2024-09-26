@@ -22,7 +22,7 @@
         "Attack"
     ],
     "CardName": "Maul",
-    "CardRarity": "Uncommon",
+    "CardRarity": "Rare",
     "Curse": "bleed",
     "Curse2": "crack",
     "Curse3": "",
@@ -92,7 +92,7 @@
     "Sound": "rabid",
     "SoundPreAction": "icespell",
     "SoundPreActionFemale": "",
-    "Sprite": "frenziedcarnage",
+    "Sprite": "maul",
     "StealAuras": 0,
     "TransferCurses": 0,
     "TargetPosition": "Anywhere",

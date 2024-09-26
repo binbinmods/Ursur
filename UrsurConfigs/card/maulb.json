@@ -92,7 +92,7 @@
     "Sound": "rabid",
     "SoundPreAction": "icespell",
     "SoundPreActionFemale": "",
-    "Sprite": "frenziedcarnage",
+    "Sprite": "maul",
     "StealAuras": 0,
     "TransferCurses": 0,
     "TargetPosition": "Random",

@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Obeliskial_Content;
 using static UnityEngine.Mathf;
-using UnityEngine;
+using BepInEx.Logging;
 
 namespace TheTyrant
 {
     [HarmonyPatch]
     internal class Traits
     {
-        // list of your trait IDs
+        // list of your trait IDs        
         public static string[] myTraitList = ["ursurursineblood",
                                                 "ursurresilience",
                                                 "ursurbellowingblows",
@@ -24,6 +24,8 @@ namespace TheTyrant
 
         public static void DoCustomTrait(string _trait, ref Trait __instance)
         {
+            Plugin.Log.LogInfo("Testing Ursur Traits");
+            
             // get info you may need
             Enums.EventActivation _theEvent = Traverse.Create(__instance).Field("theEvent").GetValue<Enums.EventActivation>();
             Character _character = Traverse.Create(__instance).Field("character").GetValue<Character>();
@@ -42,14 +44,17 @@ namespace TheTyrant
             List<string> heroHand = MatchManager.Instance.GetHeroHand(_character.HeroIndex);
             Hero[] teamHero = MatchManager.Instance.GetTeamHero();
             NPC[] teamNpc = MatchManager.Instance.GetTeamNPC();
-
+            Plugin.Log.LogDebug("Ursur CustomTrait");
+            
             // activate traits
             // I don't know how to set the combatLog text I need to do that for all of the traits
             // I took the default method from Traits.cs but don't know how to actually get it to work
             if (_trait == "ursurursineblood")
             { // Ursine Blood: Start each combat with 1 extra Energy. Whenever you play a Defense, suffer 2 Bleed. Whenever you play an Attack, suffer 3 Chill. 
               // The 1 extra energy is taken care of in the subclass json
+                Plugin.Log.LogDebug("Found Ursine Blood Trait");
                 if (_theEvent==Enums.EventActivation.CastCard){
+                    Plugin.Log.LogInfo("Casted Card");
                     string traitName = "Ursine Blood";
                     WhenYouPlayXGainY(Enums.CardType.Attack,"chill",3,_castedCard,ref _character,traitName);
                     WhenYouPlayXGainY(Enums.CardType.Defense,"bleed",2,_castedCard,ref _character,traitName);
@@ -60,7 +65,10 @@ namespace TheTyrant
                     
             else if (_trait == "ursurbristlyhide")
             { //Bristly Hide: When you gain Taunt or Fortify, gain twice as many Thorns. +1 Taunt charge for every 25 stacks of Bleed. +1 Fortify charge for every 25 stacks of Chill.
+                Plugin.Log.LogInfo("Found Bristly Hide");
+
                 if (_theEvent==Enums.EventActivation.AuraCurseSet){
+                    Plugin.Log.LogInfo("Bristly Hide AuraCurse was set");
                     string traitName = "Bristly Hide";
                     IncreaseChargesByStacks("taunt", 25.0f,"bleed",ref _character,traitName);
                     IncreaseChargesByStacks("fortify", 25.0f,"chill",ref _character,traitName);
@@ -93,50 +101,21 @@ namespace TheTyrant
 
             } 
             else if (_trait == "ursurbearlynoticeable")
-            { // Bearly Noticeable: Chill +1. Bleed +1. Chill on Ursur increases all resistances by 0.5% per stack. Bleed on Ursur increases all damage by 1.5% per stack.
+            { // Bearly Noticeable: Chill +1. Bleed +1. Chill on Ursur increases all resistances by 0.25% per stack. Bleed on Ursur increases all damage by 1.5% per stack.
              // Chill and Bleed taken care of in the ursurbearlynoticeable.json
-             //taken care of by the GlobalAuraCurseModificationByTraitsAndItemsPostfix Postfix
+             // taken care of by the GlobalAuraCurseModificationByTraitsAndItemsPostfix Postfix
             }
         }
 
+        
+        
+        
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(Trait), "DoTrait")]
+		public static bool DoTrait(Enums.EventActivation _theEvent, string _trait, Character _character, Character _target, int _auxInt, string _auxString, CardData _castedCard, ref Trait __instance)
+		{
+            Plugin.Log.LogDebug("Ursur DoTrait");
 
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(AtOManager),"GlobalAuraCurseModificationByTraitsAndItems")]
-        public static void GlobalAuraCurseModificationByTraitsAndItemsPostfix(ref AtOManager __instance, ref AuraCurseData __result, string _type, string _acId, Character _characterCaster, Character _characterTarget){
-            // "Bearly Noticeable" increases damage by 1.5%/bleed and resists by 0.25%/chill
-            AuraCurseData _AC = UnityEngine.Object.Instantiate<AuraCurseData>(Globals.Instance.GetAuraCurseData(_acId));
-            if(_acId=="bleed")
-            {
-                if(_type=="set")
-                {
-
-                    if (_characterTarget != null && __instance.CharacterHaveTrait(_characterTarget.SubclassName, "ursurbearlynoticeable"))
-                    {
-                        _AC.AuraDamageType2 = Enums.DamageType.All;
-                        _AC.AuraDamageIncreasedPercentPerStack2 = 1.5f;
-                    }
-                }
-
-            }
-            if(_acId=="chill")
-            {
-                if (_type == "set")
-                {
-                    if (_characterTarget != null && __instance.CharacterHaveTrait(_characterTarget.SubclassName, "ursurbearlynoticeable"))
-                    {
-                        _AC.ResistModified = Enums.DamageType.All;
-                        _AC.ResistModifiedPercentagePerStack = 0.25f;
-                    }
-                }
-
-            }
-
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(Trait), "DoTrait")]
-        public static bool DoTrait(Enums.EventActivation _theEvent, string _trait, Character _character, Character _target, int _auxInt, string _auxString, CardData _castedCard, ref Trait __instance)
-        {
             if ((UnityEngine.Object)MatchManager.Instance == (UnityEngine.Object)null)
                 return false;
             Traverse.Create(__instance).Field("character").SetValue(_character);
@@ -148,19 +127,11 @@ namespace TheTyrant
             if (Content.medsCustomTraitsSource.Contains(_trait) && myTraitList.Contains(_trait))
             {
                 DoCustomTrait(_trait, ref __instance);
+                Plugin.Log.LogDebug("Ursur DoTrait inside conditions");
+
                 return false;
             }
             return true;
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(Character), "SetEvent")]
-        public static void SetEventPrefix(ref Character __instance, ref Enums.EventActivation theEvent, Character target = null)
-        {
-            if (theEvent == Enums.EventActivation.AuraCurseSet && !__instance.IsHero && target != null && target.IsHero && target.HaveTrait("ulfvitrconductor") && __instance.HasEffect("spark"))
-            { // if NPC has wet applied to them, deal 50% of their sparks as indirect lightning damage
-                __instance.IndirectDamage(Enums.DamageType.Lightning, Functions.FuncRoundToInt((float)__instance.GetAuraCharges("spark") * 0.5f));
-            }
         }
 
         public static void TraitHeal(ref Character _character, ref Character _target, int healAmount, string traitName)
@@ -190,21 +161,28 @@ namespace TheTyrant
 
         public static void WhenYouGainXGainY(string gainedAuraCurse, string desiredAuraCurse, string appliedAuraCurse, int n_charges_incoming, int n_bonus_charges, float multiplier, ref Character _character, string traitName){
             // Grants a multiplier or bonus charged amount of a second auraCurse given a first auraCurse
+            Plugin.Log.LogDebug("WhenYouGainXGainY Debug Start");
             if (MatchManager.Instance != null && gainedAuraCurse != null && _character.HeroData != null)
-                {
-                    if (gainedAuraCurse==desiredAuraCurse){
-                        int toApply = RoundToInt((n_charges_incoming+n_bonus_charges)*multiplier);
-                        _character.SetAuraTrait(_character, appliedAuraCurse, toApply);
-                        _character.HeroItem.ScrollCombatText(Texts.Instance.GetText("traits_"+traitName), Enums.CombatScrollEffectType.Trait);
-                    }
+            {
+                Plugin.Log.LogDebug("WhenYouGainXGainY inside conditions 1");
+                if (gainedAuraCurse==desiredAuraCurse){
+                    Plugin.Log.LogDebug("WhenYouGainXGainY inside conditions 2");
+                    int toApply = RoundToInt((n_charges_incoming+n_bonus_charges)*multiplier);
+                    _character.SetAuraTrait(_character, appliedAuraCurse, toApply);
+                    _character.HeroItem.ScrollCombatText(Texts.Instance.GetText("traits_"+traitName), Enums.CombatScrollEffectType.Trait);
                 }
+            }
         }                        
 
         public static void WhenYouPlayXGainY(Enums.CardType desiredCardType, string desiredAuraCurse, int n_charges, CardData castedCard, ref Character _character, string traitName){
             // Grants n_charges of desiredAuraCurse to self when you play a desired cardtype
+            Plugin.Log.LogDebug("WhenYouPlayXGainY Debug Start");
             if (MatchManager.Instance != null && castedCard != null && _character.HeroData != null)
                 {
+                    Plugin.Log.LogDebug("WhenYouPlayXGainY inside conditions 1");
                     if (castedCard.GetCardTypes().Contains(desiredCardType)){
+                        Plugin.Log.LogDebug("WhenYouPlayXGainY inside conditions 2");
+
                         _character.SetAuraTrait(_character, desiredAuraCurse, n_charges);
                         _character.HeroItem.ScrollCombatText(Texts.Instance.GetText("traits_"+traitName), Enums.CombatScrollEffectType.Trait);
                     }
@@ -252,5 +230,48 @@ namespace TheTyrant
             int cTotal = chargesTotal;
             return "<br><color=#FFF>" + cCharges.ToString() + "/" + cTotal.ToString() + "</color>";
         }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(AtOManager),"GlobalAuraCurseModificationByTraitsAndItems")]
+        public static void GlobalAuraCurseModificationByTraitsAndItemsPostfix(ref AtOManager __instance, ref AuraCurseData __result, string _type, string _acId, Character _characterCaster, Character _characterTarget){
+            // "Bearly Noticeable" increases damage by 1.5%/bleed and resists by 0.25%/chill
+            AuraCurseData _AC = UnityEngine.Object.Instantiate<AuraCurseData>(Globals.Instance.GetAuraCurseData(_acId));
+            //Plugin.Log.LogInfo("Testing ursurbearlynoticeable");
+            bool flag2 = false;
+            if (_characterTarget != null && _characterTarget.IsHero)
+			{
+				flag2 = true;
+			}
+
+            if(_acId=="bleed" && flag2)
+            {
+                if(_type=="set")
+                {
+
+                    if (_characterTarget != null && __instance.CharacterHaveTrait(_characterTarget.SubclassName, "ursurbearlynoticeable"))
+                    {
+                        //Plugin.Log.LogInfo("Testing ursurbearlynoticeable inside conditions for " + _characterTarget.SubclassName + " damage");
+                        __result.AuraDamageType2 = Enums.DamageType.All;
+                        __result.AuraDamageIncreasedPercentPerStack2 = 1.5f;
+                    }
+                }
+
+            }
+            if(_acId=="chill")
+            {
+                if (_type == "set")
+                {
+                    if (_characterTarget != null && __instance.CharacterHaveTrait(_characterTarget.SubclassName, "ursurbearlynoticeable"))
+                    {                        
+                        //Plugin.Log.LogInfo("Testing ursurbearlynoticeable inside conditions for " + _characterTarget.SubclassName + " resistance");
+
+                        __result.ResistModified = Enums.DamageType.All;
+                        __result.ResistModifiedPercentagePerStack = 0.25f;
+                    }
+                }
+
+            }
+
+        }
     }
+    
 }
