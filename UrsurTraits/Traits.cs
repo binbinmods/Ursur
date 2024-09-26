@@ -5,6 +5,7 @@ using System.Linq;
 using Obeliskial_Content;
 using static UnityEngine.Mathf;
 using BepInEx.Logging;
+using static Enums;
 
 namespace TheTyrant
 {
@@ -12,7 +13,7 @@ namespace TheTyrant
     internal class Traits
     {
         // list of your trait IDs        
-        public static string[] myTraitList = ["ursurursineblood",
+        public static string[] myTraitList = {"ursurursineblood",
                                                 "ursurresilience",
                                                 "ursurbellowingblows",
                                                 "ursurbristlyhide",
@@ -20,7 +21,7 @@ namespace TheTyrant
                                                 "ursurgrizzledclaws",
                                                 "ursurbestdefense",
                                                 "ursurunbearable",
-                                                "ursurbearlynoticeable"];
+                                                "ursurbearlynoticeable"};
 
         public static void DoCustomTrait(string _trait, ref Trait __instance)
         {
@@ -108,11 +109,9 @@ namespace TheTyrant
         }
 
         
-        
-        
 		[HarmonyPrefix]
 		[HarmonyPatch(typeof(Trait), "DoTrait")]
-		public static bool DoTrait(Enums.EventActivation _theEvent, string _trait, Character _character, Character _target, int _auxInt, string _auxString, CardData _castedCard, ref Trait __instance)
+		public static bool DoTrait(EventActivation _theEvent, string _trait, Character _character, Character _target, int _auxInt, string _auxString, CardData _castedCard, ref Trait __instance)
 		{
             Plugin.Log.LogDebug("Ursur DoTrait");
 
