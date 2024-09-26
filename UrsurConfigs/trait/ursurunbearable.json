@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "When you play an Attack, gain 1 Thorns. When you play a Defense, gain 1 Fury. Immune to the negative effects of Chill and Bleed.",
+    "Description": "When you play an Attack, gain 1 Thorns. When you play a Defense, gain 1 Fury.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,

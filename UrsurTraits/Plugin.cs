@@ -12,7 +12,7 @@ namespace TheTyrant
     [BepInProcess("AcrossTheObelisk.exe")]
     public class Plugin : BaseUnityPlugin
     {
-        internal const int ModDate = 20240916;
+        internal const int ModDate = 20240925;
         private readonly Harmony harmony = new(PluginInfo.PLUGIN_GUID);
         internal static ManualLogSource Log;
         private void Awake()
@@ -30,6 +30,9 @@ namespace TheTyrant
                 _contentFolder: "Ursur",
                 _type: ["content", "hero", "trait"]
             );
+            // Add text for trait test
+            medsTexts["trait_Ursine Blood"] = "Testing String";
+
             // apply patches
             harmony.PatchAll();
         }
