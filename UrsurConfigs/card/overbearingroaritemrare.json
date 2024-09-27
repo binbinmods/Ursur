@@ -88,7 +88,7 @@
     "LookCardsVanishUpTo": 0,
     "SelfHealthLoss": 0,
     "Sound": "roar2",
-    "SoundPreAction": "caltrops",
+    "SoundPreAction": "",
     "SoundPreActionFemale": "",
     "Sprite": "overbearingroar",
     "StealAuras": 0,

@@ -52,13 +52,13 @@ namespace TheTyrant
             // I don't know how to set the combatLog text I need to do that for all of the traits
             // I took the default method from Traits.cs but don't know how to actually get it to work
             if (_trait == "ursurursineblood")
-            { // Ursine Blood: Start each combat with 1 extra Energy. Whenever you play a Defense, suffer 2 Bleed. Whenever you play an Attack, suffer 3 Chill. 
+            { // Ursine Blood: Start each combat with 1 extra Energy. Whenever you play a Defense, suffer 2 Bleed. Whenever you play an Attack, suffer 2 Chill. 
               // The 1 extra energy is taken care of in the subclass json
                 //Plugin.Log.LogDebug("Found Ursine Blood Trait");
                 if (_castedCard!=null && _character.HeroData != null){
                     //Plugin.Log.LogInfo("Ursine Blood");
                     string traitName = "Ursine Blood";
-                    WhenYouPlayXGainY(Enums.CardType.Attack,"chill",3,_castedCard,ref _character,traitName);
+                    WhenYouPlayXGainY(Enums.CardType.Attack,"chill",2,_castedCard,ref _character,traitName);
                     WhenYouPlayXGainY(Enums.CardType.Defense,"bleed",2,_castedCard,ref _character,traitName);
                     }
                 
