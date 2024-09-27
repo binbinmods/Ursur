@@ -1,7 +1,7 @@
 {
-    "Activation": "None",
-    "AuraCurseBonus1": "",
-    "AuraCurseBonus2": "",
+    "Activation": "AuraCurseSet",
+    "AuraCurseBonus1": "Taunt",
+    "AuraCurseBonus2": "Fortify",
     "AuraCurseBonus3": "",
     "AuraCurseBonusValue1": 0,
     "AuraCurseBonusValue2": 0,

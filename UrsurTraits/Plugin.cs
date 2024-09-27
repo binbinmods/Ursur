@@ -32,7 +32,7 @@ namespace TheTyrant
             );
             // Add text for trait test
             medsTexts["trait_Ursine Blood"] = "Testing String";
-            Log.LogDebug("Ursur Prepatch - 1");
+            //Log.LogDebug("Ursur Prepatch - 1");
 
             // apply patches
             harmony.PatchAll();

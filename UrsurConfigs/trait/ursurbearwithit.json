@@ -1,5 +1,5 @@
 {
-    "Activation": "BeginTurn",
+    "Activation": "BeginTurnCardsDealt",
     "AuraCurseBonus1": "",
     "AuraCurseBonus2": "",
     "AuraCurseBonus3": "",

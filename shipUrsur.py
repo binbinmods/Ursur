@@ -6,7 +6,7 @@ import json
 # Parameters
 target_name = "Ursur, The Tyrant"
 csproj_name = "TheTyrant"
-enabled = False
+enabled = True
 load_to_local_ato = True
 
 #Functions
