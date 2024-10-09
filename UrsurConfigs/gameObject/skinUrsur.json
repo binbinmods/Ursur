@@ -2,7 +2,7 @@
     "NewGameObjectID": "skinursur",
     "BaseGameObjectID": "osoboss",
     "SpriteToUse": "",
-    "ScaleX": 0.85,
-    "ScaleY": 0.85,
+    "ScaleX": 1.0,
+    "ScaleY": 1.0,
     "Flip": true
 }

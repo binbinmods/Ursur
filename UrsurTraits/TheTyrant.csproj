@@ -6,7 +6,7 @@
 	<Product>The Tyrant</Product>
     <AssemblyName>com.binbin.TheTyrant</AssemblyName>
     <Description>Ursur, The Tyrant</Description>
-    <Version>1.0.1</Version>
+    <Version>1.0.4</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

@@ -305,6 +305,28 @@ namespace TheTyrant
             }
 
         }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Character), "SetEvent")]
+        public static void SetEventPrefix(ref Character __instance, ref Enums.EventActivation theEvent, Character target = null)
+        {
+            
+            if (__instance.IsHero && (theEvent==EventActivation.BeginTurn) && __instance.Traits.Contains("ursurbristlyhide")){
+                Plugin.Log.LogDebug("Binbin -- Bristly Hide calc values");                
+                int n_bonus_taunt = FloorToInt((float )__instance.GetAuraCharges("bleed")/25.0f);
+                int n_bonus_fort = FloorToInt((float )__instance.GetAuraCharges("chill")/25.0f);
+                TraitData traitData = Globals.Instance.GetTraitData("ursurbristlyhide");
+                traitData.AuracurseBonusValue1=n_bonus_taunt;
+                traitData.AuracurseBonusValue2=n_bonus_fort;
+            }
+            if (__instance.IsHero && (theEvent==EventActivation.BeginCombatEnd) && __instance.Traits.Contains("ursurbristlyhide")){
+                Plugin.Log.LogDebug("Binbin -- Bristly Hide inside end turn");                
+                TraitData traitData = Globals.Instance.GetTraitData("ursurbristlyhide");
+                traitData.AuracurseBonusValue1=0;
+                traitData.AuracurseBonusValue2=0;
+            }
+        }
+
+        
     }
     
 }
