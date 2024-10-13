@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "At the start of each turn, for every 25 Bleed, reduce the cost of Attacks by 1 until discarded. For every 25 Chill, reduce the cost of all Defenses by 1 until discarded.",
+    "Description": "At the start of each turn, for every 16 Bleed, reduce the cost of Attacks by 1 until discarded. For every 20 Chill, reduce the cost of all Defenses by 1 until discarded.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,

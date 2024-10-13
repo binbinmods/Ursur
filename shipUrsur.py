@@ -8,7 +8,7 @@ target_name = "Ursur, The Tyrant"
 csproj_name = "TheTyrant"
 enabled = False
 load_to_local_ato = True
-doZip = True
+doZip = False
 
 #Functions
 def copy_folders(from_path,to_path):

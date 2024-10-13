@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "When you gain Taunt or Fortify, gain twice as many Thorns. Every 25 stacks of Bleed give +1 Taunt. Every 25 stacks of Chill give +1 Fortify.",
+    "Description": "When you apply Taunt or Fortify, gain twice as many Thorns. Gain +1 Fortify charge for every 16 Bleed. Gain +1 Taunt charge for every 20 Chill.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,

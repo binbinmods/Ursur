@@ -67,7 +67,7 @@ namespace TheTyrant
             if (Directory.Exists(p))
             {
                 //Plugin.Log.LogDebug("Binbin -- Path: " + p);
-                FileInfo[] medsFI = new DirectoryInfo(Path.Combine(Paths.ConfigPath, "Obeliskial_importing", characterName, "subclass")).GetFiles("*.json");
+                FileInfo[] medsFI = new DirectoryInfo(p).GetFiles("*.json");
                 foreach (FileInfo f in medsFI){
                     try
                         {
