@@ -6,9 +6,9 @@ import json
 # Parameters
 target_name = "Ursur, The Tyrant"
 csproj_name = "TheTyrant"
-enabled = False
+enabled = True
 load_to_local_ato = True
-doZip = False
+doZip = True
 
 #Functions
 def copy_folders(from_path,to_path):
