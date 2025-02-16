@@ -26,12 +26,18 @@ namespace TheTyrant
 
         public static string characterName = "Ursur";
         public static string subclassName = "tyrant";
+        public static ConfigEntry<bool> EnableDebugging { get; set; }
+        public static string debugBase = "Binbin - Testing " + characterName + " ";
+
 
         private void Awake()
         {
             Log = Logger;
             Log.LogInfo($"{PluginInfo.PLUGIN_GUID} {PluginInfo.PLUGIN_VERSION} has loaded!");
             // register with Obeliskial Essentials
+
+            EnableDebugging = Config.Bind(new ConfigDefinition(subclassName, "Enable Debugging"), true, new ConfigDescription("Enables debugging logs."));
+
             RegisterMod(
                 _name: PluginInfo.PLUGIN_NAME,
                 _author: "binbin",
@@ -49,58 +55,24 @@ namespace TheTyrant
             // apply patches
             harmony.PatchAll();
         }
-    
-    [HarmonyPatch]
-    internal class Patches
-    {
 
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(EventData),"Init")]
-        public static void InitPrefix(ref Globals __instance){
-            // Trying to add the character to the list of all characters so that they will be added to events with the "RepeatForAllCharacters" flag
-            // not sure if this is the correct place to put this function. It feels weird to put it into the Traits.cs file
-            //Plugin.Log.LogDebug("Binbin -- Attempting to add subclass to list for all events");
-            
-            //Plugin.Log.LogDebug("Binbin -- After Adding List: " + string.Join(";", Globals.Instance.SubClass.Select(x => x.Key).ToArray()));
-            //Plugin.Log.LogDebug("Binbin -- medsSubClassesSource: " + string.Join(";", Content.medsSubClassesSource.Select(x => x.Key).ToArray()));
-            string p = Path.Combine(Paths.ConfigPath, "Obeliskial_importing",characterName , "subclass");
-            if (Directory.Exists(p))
+        internal static void LogDebug(string msg)
+        {
+            if (EnableDebugging.Value)
             {
-                //Plugin.Log.LogDebug("Binbin -- Path: " + p);
-                FileInfo[] medsFI = new DirectoryInfo(p).GetFiles("*.json");
-                foreach (FileInfo f in medsFI){
-                    try
-                        {
-                            SubClassData subclass = Obeliskial_Content.DataTextConvert.ToData(JsonUtility.FromJson<SubClassDataText>(File.ReadAllText(f.ToString())));
-                            //Log.LogInfo("Binbin -- subclass to add : " + subclass.SubClassName);
-                            if (subclass!=null && !Globals.Instance.SubClass.ContainsKey(subclass.SubClassName)){
-                                Globals.Instance.SubClass.Add(subclass.SubClassName.ToLower(),subclass);
-                                
-                                //Plugin.Log.LogDebug("Binbin -- Subclass Would be added: " + subclass.SubClassName);
-                            }
-                        }
-                    catch (Exception e) { Log.LogError("Error loading custom " + characterName + " subclass " + f.Name + ": " + e.Message); }
-                }
-            }
-
-
-        }   
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(EventData),"Init")]
-        public static void InitPostfix(ref Globals __instance){
-            // Trying to add the character to the list of all characters so that they will be added to events with the "RepeatForAllCharacters" flag
-            // not sure if this is the correct place to put this function. It feels weird to put it into the Traits.cs file
-            //Plugin.Log.LogDebug("Binbin -- Attempting to add subclass to list for all events");
-            //Dictionary<string, SubClassData> dataSource = Content.medsSubClassesSource;
-            //Plugin.Log.LogDebug("Binbin -- Before Removing "+ subclassName + ": " + string.Join(";", Globals.Instance.SubClass.Select(x => x.Key).ToArray()));
-
-            if (Globals.Instance.SubClass.ContainsKey(subclassName)){
-                Globals.Instance.SubClass.Remove(subclassName);
-            }
-            
-            //Plugin.Log.LogDebug("Binbin -- After Removing tyrant: " + string.Join(";", Globals.Instance.SubClass.Select(x => x.Key).ToArray()));
-
-        }   
+                Log.LogDebug(debugBase + msg);
+            }            
         }
+        
+        internal static void LogInfo(string msg)
+        {
+            Log.LogInfo(debugBase + msg);
+        }
+        internal static void LogError(string msg)
+        {
+            Log.LogError(debugBase + msg);
+        }
+    
+    
     }
 }

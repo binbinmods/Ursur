@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "Chill +1. Bleed +1. Chill on Ursur increases all resistances by 0.25% per stack. Bleed on Ursur does not damage him and increases all damage by 1.5% per stack.",
+    "Description": "Chill +1. Bleed +1. Chill on Ursur increases all resistances by 0.25% per stack. Bleed on Ursur deals half damage to him and increases all damage by 1.5% per stack.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,

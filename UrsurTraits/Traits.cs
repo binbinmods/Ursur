@@ -7,6 +7,8 @@ using static UnityEngine.Mathf;
 using BepInEx.Logging;
 using static Enums;
 using UnityEngine;
+using static TheTyrant.CustomFunctions;
+using static TheTyrant.Plugin;
 
 namespace TheTyrant
 {
@@ -46,48 +48,51 @@ namespace TheTyrant
             List<string> heroHand = MatchManager.Instance.GetHeroHand(_character.HeroIndex);
             Hero[] teamHero = MatchManager.Instance.GetTeamHero();
             NPC[] teamNpc = MatchManager.Instance.GetTeamNPC();
-            Plugin.Log.LogDebug("Ursur CustomTrait");
-            Plugin.Log.LogDebug("Ursur: " + _trait);
+            // Plugin.Log.LogDebug("Ursur CustomTrait");
+            // Plugin.Log.LogDebug("Ursur: " + _trait);
             // activate traits
-            // I don't know how to set the combatLog text I need to do that for all of the traits
-            // I took the default method from Traits.cs but don't know how to actually get it to work
+
+            if(!IsLivingHero(_character))
+            {
+                return;
+            }
+
+            string traitName = traitData.TraitName;
+            string traitId = _trait;
+
             if (_trait == "ursurursineblood")
-            { // Ursine Blood: Start each combat with 1 extra Energy. Whenever you play a Defense, suffer 2 Bleed. Whenever you play an Attack, suffer 2 Chill. 
+            { // Ursine Blood: Start each combat with 1 extra Energy. 
+              // Whenever you play a Defense, suffer 2 Bleed. Whenever you play an Attack, suffer 2 Chill. 
               // The 1 extra energy is taken care of in the subclass json
               //Plugin.Log.LogDebug("Found Ursine Blood Trait");
                 if (_castedCard != null && _character.HeroData != null)
                 {
-                    //Plugin.Log.LogInfo("Ursine Blood");
-                    string traitName = "Ursine Blood";
+                    // string traitName = "Ursine Blood";
+                    LogDebug($"Executing Trait {traitId}: {traitName}");
+                    
                     WhenYouPlayXGainY(Enums.CardType.Attack, "chill", 2, _castedCard, ref _character, traitName);
                     WhenYouPlayXGainY(Enums.CardType.Defense, "bleed", 2, _castedCard, ref _character, traitName);
+                    // DisplayTraitScroll(ref _character, traitData);
+
                 }
-
-
             }
 
 
             else if (_trait == "ursurbristlyhide")
-            { //Bristly Hide: When you gain Taunt or Fortify, gain twice as many Thorns. +1 Fortify charge for every 16 stacks of Bleed. +1 Taunt charge for every 20 stacks of Chill.
-                Plugin.Log.LogInfo("Found Bristly Hide");
+            { //Bristly Hide: When you gain Taunt or Fortify, gain twice as many Thorns. 
+            // +1 Fortify charge for every 16 stacks of Bleed. 
+            // +1 Taunt charge for every 20 stacks of Chill.
+                // Plugin.Log.LogInfo("Found Bristly Hide");
                 if (_character.HeroData != null)
                 {
-                    string traitName = "Bristly Hide";
-                    //IncreaseChargesByStacks("taunt", 25.0f,"bleed",ref _character,traitName);
-                    //IncreaseChargesByStacks("fortify", 25.0f,"chill",ref _character,traitName);
+                    // string traitName = "Bristly Hide";
+                    
+                    // int n_bonus_taunt = FloorToInt((float)_character.GetAuraCharges("bleed") / 16.0f);
+                    // int n_bonus_fort = FloorToInt((float)_character.GetAuraCharges("chill") / 20.0f);
+                    // traitData.AuracurseBonusValue1 = n_bonus_taunt;
+                    // traitData.AuracurseBonusValue2 = n_bonus_fort;
 
-                    //Failed attempt
-                    int n_bonus_taunt = FloorToInt((float)_character.GetAuraCharges("bleed") / 16.0f);
-                    int n_bonus_fort = FloorToInt((float)_character.GetAuraCharges("chill") / 20.0f);
-                    traitData.AuracurseBonusValue1 = n_bonus_taunt;
-                    traitData.AuracurseBonusValue2 = n_bonus_fort;
-
-                    Plugin.Log.LogInfo("Bristly Hide - bonus taunt = " + n_bonus_fort + " actual =" + traitData.AuracurseBonusValue2);
-                    //Traverse.Create(__instance).Field("AuracurseBonus1").SetValue("taunt");
-                    //Traverse.Create(__instance).Field("AuracurseBonus2").SetValue("fort");
-                    //Traverse.Create(__instance).Field("auracurseBonusValue1").SetValue(n_bonus_taunt);
-                    //Traverse.Create(__instance).Field("auracurseBonusValue2").SetValue(n_bonus_fort);
-
+                    // Plugin.Log.LogInfo("Bristly Hide - bonus taunt = " + n_bonus_fort + " actual =" + traitData.AuracurseBonusValue2);
                     WhenYouGainXGainY(_auxString, "taunt", "thorns", _auxInt, 0, 2.0f, ref _character, traitName);
                     WhenYouGainXGainY(_auxString, "fortify", "thorns", _auxInt, 0, 2.0f, ref _character, traitName);
                 }
@@ -96,14 +101,15 @@ namespace TheTyrant
 
 
             else if (_trait == "ursurbearwithit")
-            { // Bear With It: At the start of each turn, reduce the cost of Attacks by 1 for every 16 Bleed on Ursur. Reduce the cost of all Defenses by 1 for every 20 Chill.
+            { // Bear With It: At the start of each turn, 
+            // reduce the cost of Attacks by 1 for every 16 Bleed on Ursur. 
+            // Reduce the cost of all Defenses by 1 for every 20 Chill.
                 if (_character.HeroData != null)
                 {
                     Plugin.Log.LogInfo("bearwithit 1");
-                    string traitName = "Bear With It";
+                    // string traitName = "Bear With It";
                     bool applyToAllCards = false;
-                    //ReduceCostByStacks(Enums.CardType.Attack, "bleed", 5,ref _character,heroHand, ref cardDataList,traitName,applyToAllCards);
-                    //ReduceCostByStacks(Enums.CardType.Defense, "chill", 5,ref _character,heroHand, ref cardDataList,traitName,applyToAllCards);
+                    
                     ReduceCostByStacks(Enums.CardType.Attack, "bleed", 16, ref _character, ref heroHand, ref cardDataList, traitName, applyToAllCards);
                     ReduceCostByStacks(Enums.CardType.Defense, "chill", 20, ref _character, ref heroHand, ref cardDataList, traitName, applyToAllCards);
                 }
@@ -111,22 +117,24 @@ namespace TheTyrant
 
             }
             else if (_trait == "ursurunbearable")
-            { // Unbearable: When you play an Attack, gain 2 Thorns. When you play a Defense, gain 1 Fury.
-                string traitName = "Unbearable";
+            { // "Thorns +1. Fury +1. 
+            // When you play an Attack, gain 2 Thorns. 
+            // When you play a Defense, gain 1 Fury. 
+            // Chill does not reduce Ursur's Speed.",
                 Plugin.Log.LogInfo(traitName + " 1");
                 if (_castedCard != null && _character.HeroData != null)
                 {
-
                     WhenYouPlayXGainY(Enums.CardType.Attack, "thorns", 2, _castedCard, ref _character, traitName);
                     WhenYouPlayXGainY(Enums.CardType.Defense, "fury", 1, _castedCard, ref _character, traitName);
                 }
 
             }
             else if (_trait == "ursurbearlynoticeable")
-            { // Bearly Noticeable: Chill +1. Bleed +1. Chill on Ursur increases all resistances by 0.25% per stack. Bleed on Ursur increases all damage by 1.5% per stack.
+            { // Bearly Noticeable: Chill +1. Bleed +1. 
+              // Chill on Ursur increases all resistances by 0.25% per stack. 
+              // Bleed on Ursur increases all damage by 1.5% per stack.
               // Chill and Bleed taken care of in the ursurbearlynoticeable.json
               // taken care of by the GlobalAuraCurseModificationByTraitsAndItemsPostfix Postfix
-              //Plugin.Log.LogDebug("Found ursurbearlynoticeable");
 
             }
         }
@@ -158,90 +166,7 @@ namespace TheTyrant
             return true;
         }
 
-        public static void TraitHeal(ref Character _character, ref Character _target, int healAmount, string traitName)
-        {
-            int _hp = healAmount;
-            if (_target.GetHpLeftForMax() < healAmount)
-                _hp = _target.GetHpLeftForMax();
-            if (_hp <= 0)
-                return;
-            _target.ModifyHp(_hp);
-            CastResolutionForCombatText _cast = new CastResolutionForCombatText();
-            _cast.heal = _hp;
-            if ((UnityEngine.Object)_target.HeroItem != (UnityEngine.Object)null)
-            {
-                _target.HeroItem.ScrollCombatTextDamageNew(_cast);
-                EffectsManager.Instance.PlayEffectAC("healimpactsmall", true, _target.HeroItem.CharImageT, false);
-            }
-            else
-            {
-                _target.NPCItem.ScrollCombatTextDamageNew(_cast);
-                EffectsManager.Instance.PlayEffectAC("healimpactsmall", true, _target.NPCItem.CharImageT, false);
-            }
-            _target.SetEvent(Enums.EventActivation.Healed);
-            _character.SetEvent(Enums.EventActivation.Heal, _target);
-            _character.HeroItem.ScrollCombatText(Texts.Instance.GetText("traits_" + traitName), Enums.CombatScrollEffectType.Trait);
-        }
-
-        public static void WhenYouGainXGainY(string gainedAuraCurse, string desiredAuraCurse, string appliedAuraCurse, int n_charges_incoming, int n_bonus_charges, float multiplier, ref Character _character, string traitName)
-        {
-            // Grants a multiplier or bonus charged amount of a second auraCurse given a first auraCurse
-            Plugin.Log.LogDebug("WhenYouGainXGainY Debug Start");
-            if (MatchManager.Instance != null && gainedAuraCurse != null && _character.HeroData != null)
-            {
-                Plugin.Log.LogDebug("WhenYouGainXGainY inside conditions 1");
-                if (gainedAuraCurse == desiredAuraCurse)
-                {
-                    Plugin.Log.LogDebug("WhenYouGainXGainY inside conditions 2");
-                    int toApply = RoundToInt((n_charges_incoming + n_bonus_charges) * multiplier);
-                    _character.SetAuraTrait(_character, appliedAuraCurse, toApply);
-                    _character.HeroItem.ScrollCombatText(Texts.Instance.GetText("traits_" + traitName), Enums.CombatScrollEffectType.Trait);
-                }
-            }
-        }
-
-        public static void WhenYouPlayXGainY(Enums.CardType desiredCardType, string desiredAuraCurse, int n_charges, CardData castedCard, ref Character _character, string traitName)
-        {
-            // Grants n_charges of desiredAuraCurse to self when you play a desired cardtype
-            //Plugin.Log.LogDebug("WhenYouPlayXGainY Debug Start");
-            if (MatchManager.Instance != null && castedCard != null && _character.HeroData != null)
-            {
-                //Plugin.Log.LogDebug("WhenYouPlayXGainY inside conditions 1");
-                if (castedCard.GetCardTypes().Contains(desiredCardType))
-                {
-                    //Plugin.Log.LogDebug("WhenYouPlayXGainY inside conditions 2");
-
-                    _character.SetAuraTrait(_character, desiredAuraCurse, n_charges);
-                    _character.HeroItem.ScrollCombatText(Texts.Instance.GetText("traits_" + traitName), Enums.CombatScrollEffectType.Trait);
-                }
-            }
-        }
-
-        public static void ReduceCostByStacks(Enums.CardType cardType, string auraCurseName, int n_charges, ref Character _character, ref List<string> heroHand, ref List<CardData> cardDataList, string traitName, bool applyToAllCards)
-        {
-            // Reduces the cost of all cards of cardType by 1 for every n_charges of the auraCurse
-            if (!((UnityEngine.Object)_character.HeroData != (UnityEngine.Object)null))
-                return;
-            int num = FloorToInt((float)(_character.EffectCharges(auraCurseName) / n_charges));
-            if (num <= 0)
-                return;
-            for (int index = 0; index < heroHand.Count; ++index)
-            {
-                CardData cardData = MatchManager.Instance.GetCardData(heroHand[index]);
-                if ((cardData.GetCardFinalCost() > 0) && (cardData.GetCardTypes().Contains(cardType) || applyToAllCards)) //previous .Contains(Enums.CardType.Attack)
-                    cardDataList.Add(cardData);
-            }
-            for (int index = 0; index < cardDataList.Count; ++index)
-            {
-                cardDataList[index].EnergyReductionTemporal += num;
-                MatchManager.Instance.UpdateHandCards();
-                CardItem fromTableByIndex = MatchManager.Instance.GetCardFromTableByIndex(cardDataList[index].InternalId);
-                fromTableByIndex.PlayDissolveParticle();
-                fromTableByIndex.ShowEnergyModification(-num);
-                _character.HeroItem.ScrollCombatText(Texts.Instance.GetText("traits_" + traitName), Enums.CombatScrollEffectType.Trait);
-                MatchManager.Instance.CreateLogCardModification(cardDataList[index].InternalId, MatchManager.Instance.GetHero(_character.HeroIndex));
-            }
-        }
+        
 
         public static void IncreaseChargesByStacks(string auraCurseToModify, float stacks_per_bonus, string auraCurseDependent, ref Character _character, string traitName)
         {
@@ -253,129 +178,121 @@ namespace TheTyrant
             _character.ModifyAuraCurseQuantity(auraCurseToModify, toIncrease);
         }
 
-        public static string TextChargesLeft(int currentCharges, int chargesTotal)
-        {
-            int cCharges = currentCharges;
-            int cTotal = chargesTotal;
-            return "<br><color=#FFF>" + cCharges.ToString() + "/" + cTotal.ToString() + "</color>";
-        }
+        
         [HarmonyPostfix]
         [HarmonyPatch(typeof(AtOManager), "GlobalAuraCurseModificationByTraitsAndItems")]
         public static void GlobalAuraCurseModificationByTraitsAndItemsPostfix(ref AtOManager __instance, ref AuraCurseData __result, string _type, string _acId, Character _characterCaster, Character _characterTarget)
-        {
-            // "Bearly Noticeable" increases damage by 1.5%/bleed and resists by 0.25%/chill
-            AuraCurseData _AC = UnityEngine.Object.Instantiate<AuraCurseData>(Globals.Instance.GetAuraCurseData(_acId));
-            //Plugin.Log.LogInfo("Testing ursurbearlynoticeable");
-            bool flag2 = false;
-            if (_characterTarget != null && _characterTarget.IsHero)
-            {
-                flag2 = true;
-            }
+        {            
+            // Bearly Noticeable: Chill +1. Bleed +1. 
+            // Chill on Ursur increases all resistances by 0.25% per stack. 
+            // Bleed on Ursur increases all damage by 1.5% per stack.
+            // Bleed deals half damage when consumed
+            
+            // Unbearable :Thorns +1. Fury +1. 
+            // When you play an Attack, gain 2 Thorns. When you play a Defense, gain 1 Fury. 
+            // Chill does not reduce Ursur's Speed.
 
-            if (_acId == "bleed" && flag2)
-            {
-                if (_type == "set")
-                {
+            // LogInfo($"GACM {subclassName}");
 
-                    if (_characterTarget != null && __instance.CharacterHaveTrait(_characterTarget.SubclassName, "ursurbearlynoticeable"))
+            Character characterOfInterest = _type == "set" ? _characterTarget : _characterCaster;
+            string traitOfInterest;
+
+            switch (_acId)
+            {
+                case "bleed":
+                    traitOfInterest = "ursurbearlynoticeable";
+                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.ThisHero))
                     {
-                        //Plugin.Log.LogInfo("Testing ursurbearlynoticeable inside conditions for " + _characterTarget.SubclassName + " damage");
+                        LogDebug($"Executing {traitOfInterest} GACM");
                         __result.AuraDamageType2 = Enums.DamageType.All;
                         __result.AuraDamageIncreasedPercentPerStack2 = 1.5f;
 
-                        __result.ProduceDamageWhenConsumed = false;
-                        __result.DamageWhenConsumedPerCharge = 0.0f;
-                    }
-
-                    if (_type == "consume")
-                    {
-                        if (_characterCaster != null && __instance.CharacterHaveTrait(_characterCaster.SubclassName, "ursurbearlynoticeable"))
-                        {
-
-                            // Bearly Noticeable makes you immune to bleed damage
-                            __result.ProduceDamageWhenConsumed = false;
-                            __result.DamageWhenConsumedPerCharge = 0.0f;
-
-                        }
+                        // __result.ProduceDamageWhenConsumed = false;
+                        __result.DamageWhenConsumedPerCharge *= 0.5f;
 
                     }
+                    break;
 
-                }
-
-            }
-            if (_acId == "chill")
-            {
-                if (_type == "set")
-                {
-                    if (_characterTarget != null && __instance.CharacterHaveTrait(_characterTarget.SubclassName, "ursurbearlynoticeable"))
+                case "chill":
+                    traitOfInterest = "ursurbearlynoticeable";
+                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.ThisHero))
                     {
-                        //Plugin.Log.LogInfo("Testing ursurbearlynoticeable inside conditions for " + _characterTarget.SubclassName + " resistance");
-
+                        LogDebug($"Executing {traitOfInterest} GACM");
                         __result.ResistModified = Enums.DamageType.All;
                         __result.ResistModifiedPercentagePerStack = 0.25f;
-                    }
-                    if (_characterTarget != null && __instance.CharacterHaveTrait(_characterTarget.SubclassName, "ursurunbearable"))
-                    {
 
-                        // Unbearable makes you immune to slow from chill
+                    }
+
+                    traitOfInterest = "ursurunbearable";
+                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.ThisHero))
+                    {
+                        LogDebug($"Executing {traitOfInterest} GACM");
                         __result.CharacterStatModified = CharacterStat.None;
                         __result.CharacterStatChargesMultiplierNeededForOne = 0;
 
                     }
-                }
-                if (_type == "consume")
-                {
-                    if (_characterCaster != null && __instance.CharacterHaveTrait(_characterCaster.SubclassName, "ursurunbearable"))
-                    {
-
-                        // Unbearable makes you immune to slow from chill
-                        __result.CharacterStatModified = CharacterStat.None;
-                        __result.CharacterStatChargesMultiplierNeededForOne = 0;
-
-                    }
-
-                }
-
-            }
-
+                    break;
+            }           
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(Character), "GetTraitAuraCurseModifiers")]
-        public static void GetTraitAuraCurseModifiersPostfix(ref Character __instance)
+        [HarmonyPatch(typeof(Character), nameof(Character.GetTraitAuraCurseModifiers))]
+        public static void GetTraitAuraCurseModifiersPostfix(ref Character __instance, ref Dictionary<string,int> __result)
         {
-            if (__instance.HeroData != null)
+            //Bristly Hide: When you gain Taunt or Fortify, gain twice as many Thorns. 
+            // +1 Fortify charge for every 16 stacks of Bleed. 
+            // +1 Taunt charge for every 20 stacks of Chill.
+            if (IsLivingHero(__instance) && __instance.HaveTrait(""))
             {
-                int n_chill = __instance.EffectCharges("chill");
-                int n_bleed = __instance.EffectCharges("bleed");
-                int n_bonus_taunt = FloorToInt((float)(n_bleed / 16.0f));
-                int n_bonus_fort = FloorToInt((float)(n_chill / 20.0f));
+                int nChill = __instance.EffectCharges("chill");
+                int nBleed = __instance.EffectCharges("bleed");
+                int bonusTauntCharges = FloorToInt(nBleed * 0.0625f);
+                int bonusFortifyCharges = FloorToInt(nChill * 0.05f);
+
+                if(__result.ContainsKey("taunt"))
+                {
+                    __result["taunt"] += bonusTauntCharges;
+                }
+                else 
+                {
+                    __result["taunt"] = bonusTauntCharges;
+                }
+
+                if(__result.ContainsKey("fortify"))
+                {
+                    __result["fortify"] += bonusFortifyCharges;
+                }
+                else 
+                {
+                    __result["fortify"] = bonusFortifyCharges;
+                }
 
             }
 
         }
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(Character), "SetEvent")]
-        public static void SetEventPrefix(ref Character __instance, ref Enums.EventActivation theEvent, Character target = null)
-        {
 
-            if (__instance.IsHero && (theEvent == EventActivation.BeginTurn) && __instance.Traits.Contains("ursurbristlyhide"))
-            {
-                Plugin.Log.LogDebug("Binbin -- Bristly Hide calc values");
-                int n_bonus_fort = FloorToInt((float)__instance.GetAuraCharges("bleed") / 16.0f);
-                int n_bonus_taunt = FloorToInt((float)__instance.GetAuraCharges("chill") / 20.0f);
-                TraitData traitData = Globals.Instance.GetTraitData("ursurbristlyhide");
-                traitData.AuracurseBonusValue1 = n_bonus_taunt;
-                traitData.AuracurseBonusValue2 = n_bonus_fort;
-            }
-            if (__instance.IsHero && (theEvent == EventActivation.BeginCombatEnd) && __instance.Traits.Contains("ursurbristlyhide"))
-            {
-                Plugin.Log.LogDebug("Binbin -- Bristly Hide inside end turn");
-                TraitData traitData = Globals.Instance.GetTraitData("ursurbristlyhide");
-                traitData.AuracurseBonusValue1 = 0;
-                traitData.AuracurseBonusValue2 = 0;
-            }
-        }
+        // [HarmonyPrefix]
+        // [HarmonyPatch(typeof(Character), "SetEvent")]
+        // public static void SetEventPrefix(ref Character __instance, ref Enums.EventActivation theEvent, Character target = null)
+        // {
+
+        //     if (__instance.IsHero && (theEvent == EventActivation.BeginTurn) && __instance.Traits.Contains("ursurbristlyhide"))
+        //     {
+        //         Plugin.Log.LogDebug("Binbin -- Bristly Hide calc values");
+        //         int n_bonus_fort = FloorToInt((float)__instance.GetAuraCharges("bleed") / 16.0f);
+        //         int n_bonus_taunt = FloorToInt((float)__instance.GetAuraCharges("chill") / 20.0f);
+        //         TraitData traitData = Globals.Instance.GetTraitData("ursurbristlyhide");
+        //         traitData.AuracurseBonusValue1 = n_bonus_taunt;
+        //         traitData.AuracurseBonusValue2 = n_bonus_fort;
+        //     }
+        //     if (__instance.IsHero && (theEvent == EventActivation.BeginCombatEnd) && __instance.Traits.Contains("ursurbristlyhide"))
+        //     {
+        //         Plugin.Log.LogDebug("Binbin -- Bristly Hide inside end turn");
+        //         TraitData traitData = Globals.Instance.GetTraitData("ursurbristlyhide");
+        //         traitData.AuracurseBonusValue1 = 0;
+        //         traitData.AuracurseBonusValue2 = 0;
+        //     }
+        // }
 
 
     }
