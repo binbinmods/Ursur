@@ -26,6 +26,8 @@ namespace TheTyrant
                                                 "ursurunbearable",
                                                 "ursurbearlynoticeable"];
 
+        // public static int startingFort = 0;
+
         public static void DoCustomTrait(string _trait, ref Trait __instance)
         {
             //Plugin.Log.LogInfo("Testing Ursur Traits");
@@ -252,24 +254,9 @@ namespace TheTyrant
                 int bonusTauntCharges = FloorToInt(nBleed * 0.0625f);
                 int bonusFortifyCharges = FloorToInt(nChill * 0.05f);
 
-                if(__result.ContainsKey("taunt"))
-                {
-                    __result["taunt"] += bonusTauntCharges;
-                }
-                else 
-                {
-                    __result["taunt"] = bonusTauntCharges;
-                }
-
-                if(__result.ContainsKey("fortify"))
-                {
-                    __result["fortify"] += bonusFortifyCharges;
-                }
-                else 
-                {
-                    __result["fortify"] = bonusFortifyCharges;
-                }
-
+                if(bonusFortifyCharges!=0) {__result["fortify"] = bonusFortifyCharges;}
+                if(bonusTauntCharges!=0) {__result["taunt"] = bonusTauntCharges;}
+                // __result["fortify"] = bonusFortifyCharges;
             }
 
         }
@@ -278,20 +265,7 @@ namespace TheTyrant
         [HarmonyPatch(typeof(Character), "SetEvent")]
         public static void SetEventPrefix(ref Character __instance, ref Enums.EventActivation theEvent, Character target = null)
         {
-            if (theEvent==EventActivation.BeginTurn)
-            {
-                LogDebug("beginTurn");
-            }
-            if (theEvent==EventActivation.BeginTurnAboutToDealCards)
-            {
-                LogDebug("BeginTurnAboutToDealCards");
-            }
-
-            if (theEvent==EventActivation.BeginTurnCardsDealt)
-            {
-                LogDebug("BeginTurnCardsDealt");
-            }
-
+            
 
             // if (__instance.IsHero && (theEvent == EventActivation.BeginTurn) && __instance.Traits.Contains("ursurbristlyhide"))
             // {
