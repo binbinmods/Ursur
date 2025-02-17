@@ -242,8 +242,11 @@ namespace TheTyrant
             //Bristly Hide: When you gain Taunt or Fortify, gain twice as many Thorns. 
             // +1 Fortify charge for every 16 stacks of Bleed. 
             // +1 Taunt charge for every 20 stacks of Chill.
-            if (IsLivingHero(__instance) && __instance.HaveTrait(""))
+
+            string traitOfInterest = "ursurbristlyhide";
+            if (IsLivingHero(__instance) && __instance.HaveTrait(traitOfInterest))
             {
+                LogDebug($"Executing Trait {traitOfInterest}");
                 int nChill = __instance.EffectCharges("chill");
                 int nBleed = __instance.EffectCharges("bleed");
                 int bonusTauntCharges = FloorToInt(nBleed * 0.0625f);
@@ -271,28 +274,42 @@ namespace TheTyrant
 
         }
 
-        // [HarmonyPrefix]
-        // [HarmonyPatch(typeof(Character), "SetEvent")]
-        // public static void SetEventPrefix(ref Character __instance, ref Enums.EventActivation theEvent, Character target = null)
-        // {
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Character), "SetEvent")]
+        public static void SetEventPrefix(ref Character __instance, ref Enums.EventActivation theEvent, Character target = null)
+        {
+            if (theEvent==EventActivation.BeginTurn)
+            {
+                LogDebug("beginTurn");
+            }
+            if (theEvent==EventActivation.BeginTurnAboutToDealCards)
+            {
+                LogDebug("BeginTurnAboutToDealCards");
+            }
 
-        //     if (__instance.IsHero && (theEvent == EventActivation.BeginTurn) && __instance.Traits.Contains("ursurbristlyhide"))
-        //     {
-        //         Plugin.Log.LogDebug("Binbin -- Bristly Hide calc values");
-        //         int n_bonus_fort = FloorToInt((float)__instance.GetAuraCharges("bleed") / 16.0f);
-        //         int n_bonus_taunt = FloorToInt((float)__instance.GetAuraCharges("chill") / 20.0f);
-        //         TraitData traitData = Globals.Instance.GetTraitData("ursurbristlyhide");
-        //         traitData.AuracurseBonusValue1 = n_bonus_taunt;
-        //         traitData.AuracurseBonusValue2 = n_bonus_fort;
-        //     }
-        //     if (__instance.IsHero && (theEvent == EventActivation.BeginCombatEnd) && __instance.Traits.Contains("ursurbristlyhide"))
-        //     {
-        //         Plugin.Log.LogDebug("Binbin -- Bristly Hide inside end turn");
-        //         TraitData traitData = Globals.Instance.GetTraitData("ursurbristlyhide");
-        //         traitData.AuracurseBonusValue1 = 0;
-        //         traitData.AuracurseBonusValue2 = 0;
-        //     }
-        // }
+            if (theEvent==EventActivation.BeginTurnCardsDealt)
+            {
+                LogDebug("BeginTurnCardsDealt");
+            }
+
+
+            // if (__instance.IsHero && (theEvent == EventActivation.BeginTurn) && __instance.Traits.Contains("ursurbristlyhide"))
+            // {
+            //     Plugin.Log.LogDebug("Binbin -- Bristly Hide calc values");
+            //     int n_bonus_fort = FloorToInt((float)__instance.GetAuraCharges("bleed") / 16.0f);
+            //     int n_bonus_taunt = FloorToInt((float)__instance.GetAuraCharges("chill") / 20.0f);
+            //     TraitData traitData = Globals.Instance.GetTraitData("ursurbristlyhide");
+            //     traitData.AuracurseBonusValue1 = n_bonus_taunt;
+            //     traitData.AuracurseBonusValue2 = n_bonus_fort;
+            // }
+            // if (__instance.IsHero && (theEvent == EventActivation.BeginCombatEnd) && __instance.Traits.Contains("ursurbristlyhide"))
+            // {
+            //     Plugin.Log.LogDebug("Binbin -- Bristly Hide inside end turn");
+            //     TraitData traitData = Globals.Instance.GetTraitData("ursurbristlyhide");
+            //     traitData.AuracurseBonusValue1 = 0;
+            //     traitData.AuracurseBonusValue2 = 0;
+            // }
+        }
 
 
     }

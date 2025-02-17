@@ -39,4 +39,10 @@
       <HintPath>../../../!libs/com.stiffmeds.obeliskialcontent.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="../../../../plugins" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="../Ursur/BepInEx/plugins" />
+  </Target>
+
 </Project>
