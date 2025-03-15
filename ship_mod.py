@@ -19,6 +19,20 @@ def copy_directory(source_dir: str, destination_dir: str):
             
     print(f"Directory Copied: {config_dir}")
 
+
+def zip_mods():
+    download_dir = os.path.expanduser("~/Downloads")
+    output_name = f"{download_dir}/Mod Zips/{mod_dir}"
+
+    print("zipping to Mod Zips")
+    zip_dir = f"{script_dir}/{mod_dir}"
+    shutil.make_archive(output_name, 'zip', zip_dir)
+
+    print("zipping to local")
+    output_name = f"{script_dir}/{mod_dir}"
+    shutil.make_archive(output_name, 'zip', zip_dir)
+
+
 if __name__ == "__main__":  
     mod_dir = "Ursur"
     config_dir = f"{mod_dir}Configs"    
@@ -26,15 +40,14 @@ if __name__ == "__main__":
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
     
+    # Copy to Local Game
     source = f"{script_dir}/{config_dir}"
     bepinex_dir = os.path.abspath(os.path.join(script_dir, '..', '..', '..'))
     destination = f"{bepinex_dir}/config/Obeliskial_importing/{content_destination_dir}"
-    
     copy_directory(source, destination)
 
+    # Copy to Local Mod folder to zip
     mod_destination = f"{script_dir}/{mod_dir}/BepInEx/config/Obeliskial_importing/{content_destination_dir}"
     copy_directory(source, mod_destination)
 
-    output_name = f"{script_dir}/{mod_dir}"
-    zip_dir = f"{script_dir}/{mod_dir}"
-    shutil.make_archive(output_name, 'zip', zip_dir)
+    zip_mods()

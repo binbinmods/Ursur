@@ -1,0 +1,9 @@
+{
+    "name": "Ursur_The_Tyrant",
+    "version_number": "1.1.1",
+    "website_url": "https://github.com/binbinmods/Ursur",
+    "description": "New Hero Mod for Ursur, the Tyrant, a Warrior who uses blood and frost to power up his attacks and his defenses.",
+    "dependencies": [
+        "meds-Obeliskial_Content-1.5.0"
+    ]
+}

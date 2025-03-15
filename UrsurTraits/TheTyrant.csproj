@@ -6,7 +6,7 @@
 	<Product>The Tyrant</Product>
     <AssemblyName>com.binbin.TheTyrant</AssemblyName>
     <Description>Ursur, The Tyrant</Description>
-    <Version>1.0.4</Version>
+    <Version>1.1.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -43,6 +43,7 @@
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="../../../../plugins" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="../Ursur/BepInEx/plugins" />
+    <Exec Command="/usr/bin/python3 &quot;$(ProjectDir)../ship_mod.py&quot;" />
   </Target>
 
 </Project>
