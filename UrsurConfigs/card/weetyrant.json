@@ -185,7 +185,7 @@
     "PullTarget": 0,
     "PushTarget": 0,
     "SelfKillHiddenSeconds": 0,
-    "ShowInTome": true,
+    "ShowInTome": false,
     "Starter": false,
     "Visible": false,
     "CardNumber": 0,

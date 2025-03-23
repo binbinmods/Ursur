@@ -1,3 +1,7 @@
+# Version 1.1.2
+
+Wee Tyrant is no longer purchaseable. They will be able to be corrupted at pet trainers in the next update of Obeliskial Content (v1.5.2)
+
 # Version 1.1.1
 
 Added Freezing Fortitude to starting deck in Obelisk Challenge
