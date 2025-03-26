@@ -190,7 +190,7 @@
     "Visible": false,
     "CardNumber": 0,
     "CardTypeList": [],
-    "Corrupted": false,
+    "Corrupted": true,
     "Description": "",
     "DescriptionID": "",
     "EndTurn": false,
