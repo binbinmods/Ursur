@@ -66,5 +66,6 @@
     "Trait3B": "ursurbestdefense",
     "Trait4A": "ursurunbearable",
     "Trait4B": "ursurbearlynoticeable",
-    "SourceCharacterName":"Ursur"
+    "SourceCharacterName":"Ursur",
+    "CardsSingularity": ["ursurfreezingfortitudestart", "spikedball","intercept","shieldbash","leapslam","maul","spikedshield","bluff","wreckingball","barricade","guard","defend","punch","heavystrike","thousandneedles"]
 }

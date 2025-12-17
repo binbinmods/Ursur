@@ -1,3 +1,11 @@
+# Version 1.2.0
+
+Update for AtO v1.7.0
+
+# Version 1.1.3
+
+Added Singularity Deck
+
 # Version 1.1.2
 
 Wee Tyrant is no longer purchaseable. They will be able to be corrupted at pet trainers in the next update of Obeliskial Content (v1.5.2)
@@ -8,11 +16,11 @@ Added Freezing Fortitude to starting deck in Obelisk Challenge
 
 # Version 1.1.0
 
-Updated for v1.5.0. 
+Updated for v1.5.0.
 
-Fixed some of the Jankiness in Bristly Hide. 
+Fixed some of the Jankiness in Bristly Hide.
 
-Minor nerfs to Bearly Noticeable. 
+Minor nerfs to Bearly Noticeable.
 
 Modernized some of the backend.
 

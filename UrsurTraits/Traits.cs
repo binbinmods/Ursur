@@ -28,23 +28,21 @@ namespace TheTyrant
 
         // public static int startingFort = 0;
 
-        public static void DoCustomTrait(string _trait, ref Trait __instance)
+        public static void DoCustomTrait(string _trait, ref Trait __instance, ref Enums.EventActivation _theEvent, ref Character _character, ref Character _target, ref int _auxInt, ref string _auxString, ref CardData _castedCard)
         {
-            //Plugin.Log.LogInfo("Testing Ursur Traits");
-
             // get info you may need
-            Enums.EventActivation _theEvent = Traverse.Create(__instance).Field("theEvent").GetValue<Enums.EventActivation>();
-            Character _character = Traverse.Create(__instance).Field("character").GetValue<Character>();
-            Character _target = Traverse.Create(__instance).Field("target").GetValue<Character>();
-            int _auxInt = Traverse.Create(__instance).Field("auxInt").GetValue<int>();
-            string _auxString = Traverse.Create(__instance).Field("auxString").GetValue<string>();
-            CardData _castedCard = Traverse.Create(__instance).Field("castedCard").GetValue<CardData>();
-            Traverse.Create(__instance).Field("character").SetValue(_character);
-            Traverse.Create(__instance).Field("target").SetValue(_target);
-            Traverse.Create(__instance).Field("theEvent").SetValue(_theEvent);
-            Traverse.Create(__instance).Field("auxInt").SetValue(_auxInt);
-            Traverse.Create(__instance).Field("auxString").SetValue(_auxString);
-            Traverse.Create(__instance).Field("castedCard").SetValue(_castedCard);
+            // Enums.EventActivation _theEvent = Traverse.Create(__instance).Field("theEvent").GetValue<Enums.EventActivation>();
+            // Character _character = Traverse.Create(__instance).Field("character").GetValue<Character>();
+            // Character _target = Traverse.Create(__instance).Field("target").GetValue<Character>();
+            // int _auxInt = Traverse.Create(__instance).Field("auxInt").GetValue<int>();
+            // string _auxString = Traverse.Create(__instance).Field("auxString").GetValue<string>();
+            // CardData _castedCard = Traverse.Create(__instance).Field("castedCard").GetValue<CardData>();
+            // Traverse.Create(__instance).Field("character").SetValue(_character);
+            // Traverse.Create(__instance).Field("target").SetValue(_target);
+            // Traverse.Create(__instance).Field("theEvent").SetValue(_theEvent);
+            // Traverse.Create(__instance).Field("auxInt").SetValue(_auxInt);
+            // Traverse.Create(__instance).Field("auxString").SetValue(_auxString);
+            // Traverse.Create(__instance).Field("castedCard").SetValue(_castedCard);
             TraitData traitData = Globals.Instance.GetTraitData(_trait);
             List<CardData> cardDataList = [];
             List<string> heroHand = MatchManager.Instance.GetHeroHand(_character.HeroIndex);
@@ -54,7 +52,7 @@ namespace TheTyrant
             // Plugin.Log.LogDebug("Ursur: " + _trait);
             // activate traits
 
-            if(!IsLivingHero(_character))
+            if (!IsLivingHero(_character))
             {
                 return;
             }
@@ -71,7 +69,7 @@ namespace TheTyrant
                 {
                     // string traitName = "Ursine Blood";
                     LogDebug($"Executing Trait {traitId}: {traitName}");
-                    
+
                     WhenYouPlayXGainY(Enums.CardType.Attack, "chill", 2, _castedCard, ref _character, traitName);
                     WhenYouPlayXGainY(Enums.CardType.Defense, "bleed", 2, _castedCard, ref _character, traitName);
                     // DisplayTraitScroll(ref _character, traitData);
@@ -82,13 +80,13 @@ namespace TheTyrant
 
             else if (_trait == "ursurbristlyhide")
             { //Bristly Hide: When you gain Taunt or Fortify, gain twice as many Thorns. 
-            // +1 Fortify charge for every 16 stacks of Bleed. 
-            // +1 Taunt charge for every 20 stacks of Chill.
-                // Plugin.Log.LogInfo("Found Bristly Hide");
+              // +1 Fortify charge for every 16 stacks of Bleed. 
+              // +1 Taunt charge for every 20 stacks of Chill.
+              // Plugin.Log.LogInfo("Found Bristly Hide");
                 if (_character.HeroData != null)
                 {
                     // string traitName = "Bristly Hide";
-                    
+
                     // int n_bonus_taunt = FloorToInt((float)_character.GetAuraCharges("bleed") / 16.0f);
                     // int n_bonus_fort = FloorToInt((float)_character.GetAuraCharges("chill") / 20.0f);
                     // traitData.AuracurseBonusValue1 = n_bonus_taunt;
@@ -104,14 +102,14 @@ namespace TheTyrant
 
             else if (_trait == "ursurbearwithit")
             { // Bear With It: At the start of each turn, 
-            // reduce the cost of Attacks by 1 for every 16 Bleed on Ursur. 
-            // Reduce the cost of all Defenses by 1 for every 20 Chill.
+              // reduce the cost of Attacks by 1 for every 16 Bleed on Ursur. 
+              // Reduce the cost of all Defenses by 1 for every 20 Chill.
                 if (_character.HeroData != null)
                 {
                     Plugin.Log.LogInfo("bearwithit 1");
                     // string traitName = "Bear With It";
                     bool applyToAllCards = false;
-                    
+
                     ReduceCostByStacks(Enums.CardType.Attack, "bleed", 16, ref _character, ref heroHand, ref cardDataList, traitName, applyToAllCards);
                     ReduceCostByStacks(Enums.CardType.Defense, "chill", 20, ref _character, ref heroHand, ref cardDataList, traitName, applyToAllCards);
                 }
@@ -120,9 +118,9 @@ namespace TheTyrant
             }
             else if (_trait == "ursurunbearable")
             { // "Thorns +1. Fury +1. 
-            // When you play an Attack, gain 2 Thorns. 
-            // When you play a Defense, gain 1 Fury. 
-            // Chill does not reduce Ursur's Speed.",
+              // When you play an Attack, gain 2 Thorns. 
+              // When you play a Defense, gain 1 Fury. 
+              // Chill does not reduce Ursur's Speed.",
                 Plugin.Log.LogInfo(traitName + " 1");
                 if (_castedCard != null && _character.HeroData != null)
                 {
@@ -150,17 +148,17 @@ namespace TheTyrant
 
             if ((UnityEngine.Object)MatchManager.Instance == (UnityEngine.Object)null)
                 return false;
-            Traverse.Create(__instance).Field("character").SetValue(_character);
-            Traverse.Create(__instance).Field("target").SetValue(_target);
-            Traverse.Create(__instance).Field("theEvent").SetValue(_theEvent);
-            Traverse.Create(__instance).Field("auxInt").SetValue(_auxInt);
-            Traverse.Create(__instance).Field("auxString").SetValue(_auxString);
-            Traverse.Create(__instance).Field("castedCard").SetValue(_castedCard);
+            // Traverse.Create(__instance).Field("character").SetValue(_character);
+            // Traverse.Create(__instance).Field("target").SetValue(_target);
+            // Traverse.Create(__instance).Field("theEvent").SetValue(_theEvent);
+            // Traverse.Create(__instance).Field("auxInt").SetValue(_auxInt);
+            // Traverse.Create(__instance).Field("auxString").SetValue(_auxString);
+            // Traverse.Create(__instance).Field("castedCard").SetValue(_castedCard);
             //Plugin.Log.LogDebug("Ursur DoTrait inside conditions " + _trait +" "+ String.Join("\n", Content.medsCustomTraitsSource));
 
             if (Content.medsCustomTraitsSource.Contains(_trait) && myTraitList.Contains(_trait))
             {
-                DoCustomTrait(_trait, ref __instance);
+                DoCustomTrait(_trait, ref __instance, ref _theEvent, ref _character, ref _target, ref _auxInt, ref _auxString, ref _castedCard);
                 Plugin.Log.LogDebug("Ursur DoTrait inside conditions " + _trait);
 
                 return false;
@@ -168,7 +166,7 @@ namespace TheTyrant
             return true;
         }
 
-        
+
 
         public static void IncreaseChargesByStacks(string auraCurseToModify, float stacks_per_bonus, string auraCurseDependent, ref Character _character, string traitName)
         {
@@ -180,16 +178,16 @@ namespace TheTyrant
             _character.ModifyAuraCurseQuantity(auraCurseToModify, toIncrease);
         }
 
-        
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(AtOManager), "GlobalAuraCurseModificationByTraitsAndItems")]
         public static void GlobalAuraCurseModificationByTraitsAndItemsPostfix(ref AtOManager __instance, ref AuraCurseData __result, string _type, string _acId, Character _characterCaster, Character _characterTarget)
-        {            
+        {
             // Bearly Noticeable: Chill +1. Bleed +1. 
             // Chill on Ursur increases all resistances by 0.25% per stack. 
             // Bleed on Ursur increases all damage by 1.5% per stack.
             // Bleed deals half damage when consumed
-            
+
             // Unbearable :Thorns +1. Fury +1. 
             // When you play an Attack, gain 2 Thorns. When you play a Defense, gain 1 Fury. 
             // Chill does not reduce Ursur's Speed.
@@ -234,12 +232,12 @@ namespace TheTyrant
 
                     }
                     break;
-            }           
+            }
         }
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Character), nameof(Character.GetTraitAuraCurseModifiers))]
-        public static void GetTraitAuraCurseModifiersPostfix(ref Character __instance, ref Dictionary<string,int> __result)
+        public static void GetTraitAuraCurseModifiersPostfix(ref Character __instance, ref Dictionary<string, int> __result)
         {
             //Bristly Hide: When you gain Taunt or Fortify, gain twice as many Thorns. 
             // +1 Fortify charge for every 16 stacks of Bleed. 
@@ -254,8 +252,8 @@ namespace TheTyrant
                 int bonusTauntCharges = FloorToInt(nBleed * 0.0625f);
                 int bonusFortifyCharges = FloorToInt(nChill * 0.05f);
 
-                if(bonusFortifyCharges!=0) {__result["fortify"] = bonusFortifyCharges;}
-                if(bonusTauntCharges!=0) {__result["taunt"] = bonusTauntCharges;}
+                if (bonusFortifyCharges != 0) { __result["fortify"] = bonusFortifyCharges; }
+                if (bonusTauntCharges != 0) { __result["taunt"] = bonusTauntCharges; }
                 // __result["fortify"] = bonusFortifyCharges;
             }
 
@@ -265,7 +263,7 @@ namespace TheTyrant
         [HarmonyPatch(typeof(Character), "SetEvent")]
         public static void SetEventPrefix(ref Character __instance, ref Enums.EventActivation theEvent, Character target = null)
         {
-            
+
 
             // if (__instance.IsHero && (theEvent == EventActivation.BeginTurn) && __instance.Traits.Contains("ursurbristlyhide"))
             // {
