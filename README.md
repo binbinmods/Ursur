@@ -22,19 +22,21 @@ This mod relies on [Obeliskial Content](https://across-the-obelisk.thunderstore.
 Starting Item: Wee Tyrant
 Starting Card: Freezing Fortitude
 
+![Wee Tyrant](https://github.com/binbinmods/Ursur/blob/main/Assets/weetyrant.png?raw=true)
+![Freezing Fortitude](https://github.com/binbinmods/Ursur/blob/main/Assets/freezingfortitude.png?raw=true)
+
 Starting Deck:
-1 Freezing Fortitude
-3 intercepts
-2 spiked shield
-3 shield bash
-2 spiked ball
-2 leap slam
-2 maul
-![Wee Tyrant](<insert>/weetyrant.png)
-![Freezing Fortitude](<insert>/freezingfortitude.png)
-![Maul](<insert>/maul.png)
-![Leap Slam](<insert>/leapslam.png)
-![Spiked Ball](<insert>/spikedball.png)
+- 1 Freezing Fortitude
+- 3 intercepts
+- 2 spiked shield
+- 3 shield bash
+- 2 spiked ball
+- 2 leap slam
+- 2 maul
+
+![Maul](https://github.com/binbinmods/Ursur/blob/main/Assets/maul.png?raw=true)
+![Leap Slam](https://github.com/binbinmods/Ursur/blob/main/Assets/leapslam.png?raw=true)
+![Spiked Ball](https://github.com/binbinmods/Ursur/blob/main/Assets/spikedball.png?raw=true)
 
 </details>
 
@@ -46,10 +48,10 @@ Ursine Blood: Start each combat with 1 extra Energy. Whenever you play a Defense
 
 ### Level 2
 
-![Resilience](<insert>/resilience.png)
+![Resilience](https://github.com/binbinmods/Ursur/blob/main/Assets/resilience.png?raw=true)
 Resilience. When you play a Defense, Draw 1, Gain Fortify + fury. [3 charges]
 
-![Bellowing Blows](<insert>/bellowingblows.png)
+![Bellowing Blows](https://github.com/binbinmods/Ursur/blob/main/Assets/bellowingblows.png?raw=true)
 Bellowing Blows: When you deal damage with a hit, gain taunt, block, draw a card, suffer bleed and chill. [4 charges]
 
 ### Level 3
@@ -59,12 +61,12 @@ Bear With It: At the start of each turn, reduce the cost of Attacks by 1 for eve
 
 ### Level 4
 
-![Grizzled Claws](<insert>/grizzledclaws.png)
+![Grizzled Claws](https://github.com/binbinmods/Ursur/blob/main/Assets/grizzledclaws.png?raw=true)
 Grizzled Claws: Thorns +1. When you play an Attack, Gain thorns, and Add a Vicious Slash or a Brutal Slash to your hand. [4 charges]
-Vicious Slash: Deal X Slashing, Apply X Bleed, Suffer X Chill (potentially X bleed too). Where X=your Bleed*0.5. Dispel your Bleed. Gain 1 Fortify.
-Brutal Slash: Deal X Blunt. Apply X Chill, Suffer X Bleed. Where X = your Chill*0.5. Dispel your Chill. Gain 2 Taunt.
+Vicious Slash: Deal X Slashing, Apply X Bleed, Suffer X Chill. Where X = Bleed\*0.5. Dispel your Bleed. Gain 1 Fortify.
+Brutal Slash: Deal X Blunt. Apply X Chill, Suffer X Bleed. Where X = Chill\*0.5. Dispel your Chill. Gain 2 Taunt.
 
-![Best Defense](<insert>/bestdefense.png)
+![Best Defense](https://github.com/binbinmods/Ursur/blob/main/Assets/bestdefense.png?raw=true)
 Best Defense: When you play a defense add a random attack to your hand, costs 0 and vanish. 5x uses
 
 ### Level 5

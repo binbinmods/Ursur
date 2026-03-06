@@ -1,0 +1,32 @@
+[config]
+schemaVersion = "0.2.1"
+
+[package]
+namespace = "Binbin"
+name = "Ursur"
+versionNumber = "1.2.1"
+description = "New Hero Mod for Ursur, the Tyrant, a Warrior who uses blood and frost to power up his attacks and his defenses."
+websiteUrl = "https://github.com/binbinmods/Ursur"
+containsNsfwContent = false
+
+[package.dependencies]
+meds-Obeliskial_Essentials = "1.5.1"
+meds-Obeliskial_Content = "1.7.2"
+
+
+[build]
+icon = "./icon.png"
+readme = "./README.md"
+outdir = "./build"
+
+[[build.copy]]
+source = "./Ursur"
+target = ""
+
+
+[publish]
+repository = "https://thunderstore.io"
+communities = [ "across-the-obelisk", ]
+[publish.categories]
+across-the-obelisk = [ "mods", ]
+
